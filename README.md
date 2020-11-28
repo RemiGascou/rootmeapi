@@ -1,6 +1,6 @@
 # RootMe API
 
-[![Build Status](https://travis-ci.org/RemiGascou/rootmeapi.svg?branch=master)](https://travis-ci.org/RemiGascou/rootmeapi)
+[![Build Status](https://api.travis-ci.org/RemiGascou/rootmeapi.svg?branch=main)](https://api.travis-ci.org/RemiGascou/rootmeapi.svg?branch=main)
 [![PyPi Version](https://badge.fury.io/py/rootmeapi.svg)](https://badge.fury.io/py/rootmeapi.svg)
 
 ## Installation

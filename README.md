@@ -1,7 +1,7 @@
 # RootMe API
 
-[![Build Status](https://travis-ci.org/RemiGascou/bioinfoutils.svg?branch=master)](https://travis-ci.org/RemiGascou/bioinfoutils)
-[![PyPi Version](https://badge.fury.io/py/bioinfoutils.svg)](https://badge.fury.io/py/bioinfoutils.svg)
+[![Build Status](https://travis-ci.org/RemiGascou/rootmeapi.svg?branch=master)](https://travis-ci.org/RemiGascou/rootmeapi)
+[![PyPi Version](https://badge.fury.io/py/rootmeapi.svg)](https://badge.fury.io/py/rootmeapi.svg)
 
 ## Installation
 

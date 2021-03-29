@@ -25,6 +25,9 @@ class RootMeAPI(object):
         self.debug("RootMeAPI.__init__()")
         self.api_link = 'https://api.www.root-me.org'
         self.credentials = {'connected': False, 'cookies': {}}
+        self.headers = {
+            "User-Agent" : "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:87.0) Gecko/20100101 Firefox/87.0"
+        }
 
     def login(self, login, password=""):
         """
@@ -39,24 +42,28 @@ class RootMeAPI(object):
             data={
                 'login': login.lower(),
                 'password': password
-            }
+            },
+            headers=self.headers
         )
         del password
-        response = json.loads(r.content)[0]
-        if 'error' in response.keys():
-            self.debug("Error %s : %s" % (response['error']['code'], response['error']['message']), level='warn')
-            self.debug("Not connected.", level='warn')
-        elif 'info' in response.keys():
-            if "spip_session" in response['info'].keys() and response['info']['code'] == 200:
-                self.credentials = {
-                    'connected': True,
-                    'cookies': {
-                        "spip_session": response['info']["spip_session"]
+        if r.status_code != 200:
+            print('An error occured (HTTP %d)' % r.status_code)
+        else:
+            response = json.loads(r.content)[0]
+            if 'error' in response.keys():
+                self.debug("Error %s : %s" % (response['error']['code'], response['error']['message']), level='warn')
+                self.debug("Not connected.", level='warn')
+            elif 'info' in response.keys():
+                if "spip_session" in response['info'].keys() and response['info']['code'] == 200:
+                    self.credentials = {
+                        'connected': True,
+                        'cookies': {
+                            "spip_session": response['info']["spip_session"]
+                        }
                     }
-                }
-                self.debug("spip_session=%s" % self.credentials['cookies']['spip_session'], level='info')
-                self.debug('Successfully connected !', level='info', force=True)
-                return True
+                    self.debug("spip_session=%s" % self.credentials['cookies']['spip_session'], level='info')
+                    self.debug('Successfully connected !', level='info', force=True)
+                    return True
         return False
 
     def get_challenges(self):
@@ -67,7 +74,8 @@ class RootMeAPI(object):
         # Sending request
         r = requests.get(
             self.api_link + '/challenges',
-            cookies=self.credentials['cookies']
+            cookies=self.credentials['cookies'],
+            headers=self.headers
         )
         response = json.loads(r.content)[0]
         return response
@@ -80,7 +88,8 @@ class RootMeAPI(object):
         # Sending request
         r = requests.get(
             self.api_link + '/challenges/%d' % id,
-            cookies=self.credentials['cookies']
+            cookies=self.credentials['cookies'],
+            headers=self.headers
         )
         response = json.loads(r.content)[0]
         return response
@@ -93,7 +102,8 @@ class RootMeAPI(object):
         # Sending request
         r = requests.get(
             self.api_link + '/auteurs?debut_auteurs=%d' % start_index,
-            cookies=self.credentials['cookies']
+            cookies=self.credentials['cookies'],
+            headers=self.headers
         )
         response = json.loads(r.content)
         return response
@@ -106,7 +116,8 @@ class RootMeAPI(object):
         # Sending request
         r = requests.get(
             self.api_link + '/auteurs/%d' % id,
-            cookies=self.credentials['cookies']
+            cookies=self.credentials['cookies'],
+            headers=self.headers
         )
         return Author(int(id)).load(json.loads(r.content))
 
@@ -118,7 +129,8 @@ class RootMeAPI(object):
         # Sending request
         r = requests.get(
             self.api_link + '/auteurs?nom=%s' % name,
-            cookies=self.credentials['cookies']
+            cookies=self.credentials['cookies'],
+            headers=self.headers
         )
         response = json.loads(r.content)[0]
         results = [
@@ -135,7 +147,8 @@ class RootMeAPI(object):
         # Sending request
         r = requests.get(
             self.api_link + '/environnements_virtuels',
-            cookies=self.credentials['cookies']
+            cookies=self.credentials['cookies'],
+            headers=self.headers
         )
         response = json.loads(r.content)[0]
         return response
@@ -148,7 +161,8 @@ class RootMeAPI(object):
         # Sending request
         r = requests.get(
             self.api_link + '/environnements_virtuels/%d' % id,
-            cookies=self.credentials['cookies']
+            cookies=self.credentials['cookies'],
+            headers=self.headers
         )
         response = json.loads(r.content)[0]
         return response
